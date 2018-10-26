@@ -1,0 +1,41 @@
+#tiny2313
+
+
+
+
+
+##########################
+#CHANGE FUSE BITS 
+
+#DEFAULT FUSES FOR ATTINY2313
+sudo avrdude -V -c usbtiny -p attiny2313 -U lfuse:w:0x64:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m   
+
+
+#external xtal 
+sudo avrdude -V -c usbtiny -p attiny2313 -U lfuse:w:0x4e:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m 
+
+
+#no divide by eight
+sudo avrdude -V -c usbtiny -p attiny2313  -U lfuse:w:0xe4:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m 
+
+
+###########################
+
+#read the flash ram 
+
+avrdude -p attiny2313   -c usbtiny -U flash:r:flash.bin:r    ###  -P usb
+
+
+#write the flash back to a chip 
+avrdude -p attiny2313 -c usbtiny -U flash:w:flash.bin  ##-P usb
+
+
+#read the eeprom 
+#avrdude -p attiny2313   -c usbtiny  -U eeprom:r:eedump.hex:i
+avrdude -p attiny2313   -c usbtiny  -U eeprom:r:eedump.bin:r
+
+#write the eeprom back to a chip 
+avrdude -p attiny2313 -c usbtiny -U eeprom:w:eedump.bin  ##-P usb
+
+
+

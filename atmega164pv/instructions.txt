@@ -1,0 +1,89 @@
+#mega164pv
+
+
+
+uint8_t   0 to 255
+int8_t    -128 to +127
+uint16_t  0 to 65535
+int16_t   -32768 to +32767 
+
+
+
+
+
+
+##########################
+#CHANGE FUSE BITS 
+
+#DEFAULT FUSES FOR ATTINY2313
+sudo avrdude -V -c usbtiny -p atmega164p   
+
+
+#default
+sudo avrdude -V -c usbtiny -p atmega164p -U lfuse:w:0x42:m -U hfuse:w:0x99:m 
+
+##########################
+
+
+
+sudo avrdude -V -c usbtiny -p atmega164p -U lfuse:w:0x48:m -U hfuse:w:0x99:m
+
+
+#external xtal -USE THIS!
+sudo avrdude -V -c usbtiny -p atmega164p -U lfuse:w:0x7f:m -U hfuse:w:0x99:m
+
+
+#no divide by eight
+sudo avrdude -V -c usbtiny -p atmega164p  -U lfuse:w:0xff:m -U hfuse:w:0x99:m -U efuse:w:0xff:m 
+#PULSES ON SCOPE = 400ns
+
+###########################
+
+#read the flash ram 
+
+avrdude -p attiny2313   -c usbtiny -U flash:r:flash.bin:r    ###  -P usb
+
+
+#write the flash back to a chip 
+avrdude -p attiny2313 -c usbtiny -U flash:w:flash.bin  ##-P usb
+
+
+#read the eeprom 
+#avrdude -p attiny2313   -c usbtiny  -U eeprom:r:eedump.hex:i
+avrdude -p attiny2313   -c usbtiny  -U eeprom:r:eedump.bin:r
+
+#write the eeprom back to a chip 
+avrdude -p attiny2313 -c usbtiny -U eeprom:w:eedump.bin  ##-P usb
+
+
+
+///////////////////////////////////
+
+SNIPETS
+
+
+//set baudrate
+#define baud 4800
+#define fosc 16000000UL
+#define UBBRVAL (((fosc / (baud * 16UL))) - 1) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

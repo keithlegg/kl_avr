@@ -1,0 +1,25 @@
+40005 234  #EA  - NOP
+      
+#load accumulator $AA
+40006 169  #A9  - LDA   
+40007 170  #AA  - Decimal 170 , binary 10101010 
+
+#store accumulator zero page absolute $0005
+40008 141  #8D  - STA  (absolute)
+40009 5    #05 
+40010 0    #00   
+
+#Increment location $0005
+40011 230  #E6 - INC 
+40012 5    #05 - ADDRESS
+
+#load modified data back into accumulator  
+40013 165   #A5 LDA ZERO PAGE    
+40014 5     # 5 
+40015 76    #4C JMP        
+40016 69    #Vector LSB  
+40017 156   #Vector MSB
+
+#THE RESET VECTOR (0x9C45 in little endian)     
+65532 69    #FFFC, 45   - LSB
+65533 156   #FFFD, 9C   - MSB

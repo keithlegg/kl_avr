@@ -1,0 +1,39 @@
+#POKE DATA TO READ IN LATER
+10 204     #05
+11 172     #05
+12 245     #05                
+
+#########################
+
+40005 234   #EA  - NOP
+
+#load accumulator $AA
+40006 169   #A9  - LDA   
+40007 170   #AA  - Decimal 170 , binary 10101010 
+
+#store accumulator zero page $0005
+40008 133    #85 - STA  (zero page)
+40009 5      #05 
+
+#store accumulator absolute $0005
+#40008 141    #8D - STA  (absolute)
+#40009 5      #05 
+#40010 0      #00 
+
+#Increment location $0005
+40010 230    #E6 - INC 
+40011 10     #05 - ADDRESS
+
+#load modified data back into accumulator  
+40012 165    #A5 LDA ZERO PAGE    
+40013 5      
+
+40014 76     #4C JMP        
+40015 69     #Vector LSB  
+40016 156    #Vector MSB
+
+#6502 reset vector in little endian format.
+#JUMP TO 0x9C45 (little endian)        
+
+65532 69     #FFFC, 45   - LSB
+65533 156    #FFFD, 9C   - MSB

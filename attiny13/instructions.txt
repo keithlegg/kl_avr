@@ -1,0 +1,41 @@
+
+
+sudo avrdude -V -c usbtiny -p ATtiny13
+
+
+#read fuse bits
+sudo avrdude -V -c usbtiny -p ATtiny13 -U hfuse:r:high.hex:i -U lfuse:r:low.hex:i 
+
+
+#OUTPUT FORMATS 
+i Intel Hex
+s Motorola S-record
+r raw binary; little-endian byte order, 
+
+
+##########################
+
+avr-gcc -DF_CPU=16000000UL -mmcu=attiny13 -o PWM.out PWM.c 
+
+avr-objcopy -O ihex -R .eeprom PWM.out PWM.hex
+
+avrdude -V -c usbtiny -p attiny85 -b 19200 -P /dev/cuaU0 -U flash:w:PWM.hex
+
+##########################
+#CHANGE FUSE BITS 
+
+#DEFAULT FUSES FOR ATTINY13
+sudo avrdude -V -c usbtiny -p attiny13 -U lfuse:w:0x6a:m -U hfuse:w:0xff:m    
+
+
+#EXTERNAL 8mhz OSCILATOR FOR TINY85
+
+
+
+
+
+##########################
+
+
+
+

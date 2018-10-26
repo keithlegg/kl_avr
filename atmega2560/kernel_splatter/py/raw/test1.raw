@@ -1,0 +1,19 @@
+
+
+
+65000 234 #EA  - NOP
+65001 234 #EA  - NOP
+65002 234 #EA  - NOP
+65003 234 #EA  - NOP
+65004 234 #EA  - NOP
+65005 234 #EA  - NOP
+65006 234 #EA  - NOP
+65007 234 #EA  - NOP
+65008 76  #4C  - JMP
+65009 232 #arg1  E8
+65010 253 #arg2  FD
+# #-------------------------#        
+# #6502 reset vector in little endian format.
+# #JUMP TO 0xFDE8 (little endian)
+65532 232 #FFFC, E8  - LSB
+65533 253 #FFFD, FD  - MSB
