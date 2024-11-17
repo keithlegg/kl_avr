@@ -1,0 +1,35 @@
+
+# atmega32U4 (used by Mojo FPGA V3)
+
+
+
+
+##########################
+
+avr-gcc -DF_CPU=16000000UL -mmcu=m32u4 -o analog.out *.c 
+avr-objcopy -O ihex -R .eeprom analog.out analog.hex
+avrdude -V -c usbtiny -p m32u4 -b 19200 -P /dev/cuaU0 -U flash:w:analog.hex
+
+
+
+##########################
+#CHANGE FUSE BITS 
+
+#Your efuse error is because AVRDude reads unimplemented fuse bits as 0. That is, it appears that only the first 3 fuse bits (0x07 = 0b00000111) are used, so just write 0x07 to that fuse instead of 0xFF.
+
+
+#DEFAULT FUSES FOR MEGA32U4
+sudo avrdude -V -c usbtiny -p m32u4 -U lfuse:w:0x5e:m -U hfuse:w:0x99:m 
+
+
+# sudo avrdude -V -c usbtiny -p m32u4 -U lfuse:w:0x5e:m -U hfuse:w:0x99:m -U efuse:w:0xf3:m  
+
+#INTERNAL , NO DIVIDE BY 8 
+
+#external xtal - divide by 8 
+
+#external no divide by eight
+ 
+ 
+
+
