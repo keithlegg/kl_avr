@@ -1,6 +1,6 @@
 
 
-SOURCES=./src/archive_keep/blink.c
+SOURCES=./src/archive_keep/diyservo.c
 
 
 
