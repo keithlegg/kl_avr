@@ -8,8 +8,10 @@
 #define F_CPU 16000000L // Define software reference clock for delay duration
 
 #define FOSC 16000000L // Clock Speed
-#define BAUD 9600
-#define MYUBRR FOSC/16/BAUD-1
+#define BAUD 115200
+
+//#define MYUBRR FOSC/16/BAUD-1
+#define MYUBRR 8
 
 
 #define BIT_ON 0x30 //ascii 1
@@ -77,7 +79,12 @@ void USART_Init( unsigned int ubrr)
    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
    // Set frame format: 8data, 2stop bit 
    UCSR0C = (1<<USBS0)|(3<<UCSZ00);
+
+   UCSR0B |= (1 << RXCIE0); //+interupt
+
 }
+
+
 
 
 /***********************************************/
@@ -92,16 +99,7 @@ void USART_Transmit( unsigned char data )
 
 
 
-/***********************************************/
-void USART_tx_string( char *data )
-{
-while ((*data != '\0'))
-   {
-      while (!(UCSR0A & (1 <<UDRE0)));
-      UDR0 = *data;
-      data++;
-   }   
-}
+
 
 
 
@@ -131,30 +129,52 @@ void send_txt_2bytes( uint16_t data, uint8_t use_newline,  uint8_t use_space){
 }
 
 /***********************************************/
-void send_txt_byte( uint8_t data, uint8_t use_newline,  uint8_t use_space){
+void print_byte( uint8_t data){
    uint8_t i = 0;
 
    for (i=0; i<=7; i++) {
+       //if ( !!(data & (1 << ii)) ){  // LSB
        if ( !!(data & (1 << (7 - i))) ){  // MSB
            USART_Transmit( BIT_OFF );
        }else{
            USART_Transmit( BIT_ON );
        }
     }
-    
-    if(use_space!=0){
-        USART_Transmit(0x20);    //SPACE 
-    }
-
-    if(use_newline!=0){
-        USART_Transmit( 0xa ); //CHAR_TERM = new line  
-        USART_Transmit( 0xd ); //0xd = carriage return
-    }
 }
 
 
 
+/***********************************************/
+void USART_tx_string( char *data )
+{
+while ((*data != '\0'))
+   {
+      while (!(UCSR0A & (1 <<UDRE0)));
+      UDR0 = *data;
+      data++;
+   }   
+}
 
+
+static uint8_t USART_receive(void)
+{
+    while (!(UCSR0A & (1 << RXC0))) {/*Busy wait.*/}
+    return UDR0;
+}
+
+void rx_command(){
+    uint8_t buf = USART_receive();
+    
+    // "1" in ascii 
+    if (buf==0x31){
+    }
+
+    // "2" in ascii 
+    if (buf==0x32){
+    }
+  
+    //print_byte(buf);
+}
 
 
 /***********************************************/
@@ -281,6 +301,7 @@ void servoloop(void)
         {
             //if(encoder_cnt!=last_cnt)
             //{  
+ 
                 //slope = (output_end - output_start) / (input_end - input_start);
                 //output = output_start + slope * (input - input_start);
 
@@ -292,9 +313,10 @@ void servoloop(void)
                     //USART_Transmit(encoder_dir);  
                     
                     send_txt_2bytes( encoder_cnt, true, true);    
-                    send_txt_2bytes( error, true, true); 
-                    
-                    send_txt_2bytes( power, true, true); 
+                    //send_txt_2bytes( error, true, true); 
+                    //send_txt_2bytes( power, true, true); 
+                    send_txt_2bytes( newpos, true, true); 
+
                     USART_Transmit( 0xa ); //CHAR_TERM = new line  
                     USART_Transmit( 0xd ); //0xd = carriage return
                 }else{
@@ -311,18 +333,15 @@ void servoloop(void)
 
  
 int main(){
-    
     //setup uart
     USART_Init(MYUBRR);
 
-    power   = 170;
-    dir     = 1;
+    power       = 170;
+    dir         = 1;
     
     encoder_cnt = 500;
     error       = 0;
-
-
-    newpos = 500;
+    newpos      = 500;
     
     stale=0;
 
@@ -330,6 +349,7 @@ int main(){
     servoinit();
     servoloop();
 
+    //while(1){rx_command();}
 
 }
  
@@ -340,6 +360,24 @@ int main(){
 // read the state of the two quadrature lines on falling edge 
 // capture the data so the main loop can process
  
+
+
+ISR (USART_RX_vect)
+{
+    while(!(UCSR0A & (1 << RXC0))); // wait for data
+    
+    // "1" in ascii 
+    if (UDR0==0x31){
+        newpos = 400;
+    }
+    
+    // "2" in ascii 
+    if (UDR0==0x32){
+        newpos = 600;
+    }
+  
+}
+
 
 ISR (INT0_vect)
 {
