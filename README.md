@@ -1,18 +1,11 @@
 # kl_avr
-
-
-
-5+ years of AVR microcontroller experiments
-
 my experiments learning 8bit AVR chips
 
-From 2012-2017 
-
+Over 10 years of having more fun with 8 bits than you can imagine. And I still am. 
+I will always have a profound happiness of the simple days of banging bits on AVR chips.
 
 Posted here as much for myself as anything.
 
 
-
-I will always have a profound happiness of the simple days of banging bits on AVR chips.
 
 
