@@ -37,16 +37,16 @@ main:
 	out		DDRB,accum
 
 	// Put our stack at the top of internal SRAM
-	ldi		accum,LO(RAMEND)
-	out		SPL,accum
-	ldi		accum,HI(RAMEND)
-	out		SPH,accum
+	ldi		accum, LO(RAMEND)
+	out		SPL, accum
+	ldi		accum, HI(RAMEND)
+	out		SPH, accum
 
-	ldi		accum,_BV(CLKPCE)
-	sts		CLKPR,accum
-	ldi		accum,0
-	sts		CLKPR,accum
-    rjmp    bar
+	ldi		accum, _BV(CLKPCE)
+	sts		CLKPR, accum
+	ldi		accum, 0
+	sts		CLKPR, accum
+   rjmp    bar
 
 foo:
 	nop
