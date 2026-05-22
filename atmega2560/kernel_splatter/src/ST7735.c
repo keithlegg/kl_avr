@@ -436,7 +436,7 @@ static const uint8_t Font[] PROGMEM = {
 
 //-------------------------------------------
 
-inline void spiwrite(uint8_t c) {
+void spiwrite(uint8_t c) {
     SPDR = c;                    // send the data
     while(!(SPSR & (1<<SPIF)));  // wait until transmission is complete  
 }

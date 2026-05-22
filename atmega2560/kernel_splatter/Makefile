@@ -90,7 +90,7 @@ program_fuses:
 program: $(PROJECT).hex
 	@echo
 	@echo "Downloading..."
-	sudo avrdude -v -p $(PROG_MMCU) -c $(PROGRAMMER) -e \
+	avrdude -v -p $(PROG_MMCU) -c $(PROGRAMMER) -e \
 	-U flash:w:$(PROJECT).hex
 	@echo
 
