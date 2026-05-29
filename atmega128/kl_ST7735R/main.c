@@ -157,7 +157,16 @@ int main (void)
     //SPCR |= (1<<MSTR)|(1<<SPE)|(1<<CPHA)|(1<<CPOL);  // SPI Master, SPI Enable, Trailing edge
     SPCR |= (1<<MSTR)|(1<<SPE);  // SPI Master, SPI Enable
     SPSR |= SPI2X;
-   
+    
+    while(1)
+    {
+        ST7735_InitR(INITR_BLACKTAB);  
+        ST7735_FillScreen(0x00);
+        
+        _delay_ms(100);
+    }
+
+    /* 
     ST7735_InitR(INITR_BLACKTAB);  
     ST7735_FillScreen(0x00);
     
@@ -192,6 +201,7 @@ int main (void)
         lastx = x;
         lasty = y;
     }
+    */
 
 
 }//main

@@ -78,16 +78,24 @@ sudo avrdude -V -c usbtiny -p atmega128 -U lfuse:w:0xc1:m -U lfuse:w:0xf8:m -U h
 
 
 # DEFAULT FUSES  - WITHOUT 103 COMPATIBILITY MODE OR JTAG!!!! 
-sudo avrdude -V -c usbtiny -p atmega128  -U lfuse:w:0xc1:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m 
+avrdude -V -c usbtiny -p atmega128  -U lfuse:w:0xc1:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m 
 
 
 
 # external xtal  - THIS SEEMS TO WORK!!
-sudo avrdude -V -c usbtiny -p atmega128  -U lfuse:w:0xff:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m 
+avrdude -V -c usbtiny -p atmega128  -U lfuse:w:0xff:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m 
 
 
 
 
+
+###########################
+
+#read the fuse bits 
+avrdude -V -c usbtiny -p atmega128 -U lfuse:r:-:h -U hfuse:r:-:h 
+
+#fuse settings on board with 1.8TFT
+-l 0xff -h 0xd9
 
 ###########################
 
